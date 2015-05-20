@@ -1,0 +1,26 @@
+{
+  "name": "vaadin-doc-viewer",
+  "version": "0.0.1",
+  "homepage": "https://github.com/manolo/vaadin-doc-viewer",
+  "authors": [
+    "Manolo Carrasco <manolo@vaadin.com>"
+  ],
+  "description": "A custom HTML element for reading documentation of Vaadin Components",
+  "main": "vaadin-doc-viewer.html",
+  "keywords": [
+    "web-components",
+    "polymer",
+    "vaadin"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "iron-doc-viewer": "PolymerElements/iron-doc-viewer#v0.8.8"
+  }
+}
