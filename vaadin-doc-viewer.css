@@ -19,7 +19,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 #content {
   mixin(--paper-font-body1);
   flex-basis: 100%;
-  width: 48em;
+  width: 500px;
   max-width: 48em;
   height: 100%;
 }
@@ -67,6 +67,10 @@ nav .elements li {
   mixin(--paper-font-code2);
   cursor: pointer;
   color: #03A9F4;
+}
+nav .elements li:not([abstract]) {
+  font-size: 110% !important;
+  font-weight: b
 }
 nav .elements li:not([abstract]):before {
   content: '<';

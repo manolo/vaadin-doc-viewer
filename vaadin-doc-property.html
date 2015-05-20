@@ -11,6 +11,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../paper-styles/typography.html">
 <link rel="import" href="../polymer/polymer.html">
 
+<link rel="import" href="vaadin-doc-type.html">
+
 <!--
 Renders documentation describing a specific property of an element.
 
@@ -28,8 +30,9 @@ Give it a hydrolysis `PropertyDescriptor` (via `descriptor`), and watch it go!
       </div>
       <div id="details">
         <div id="meta">
-          <span id="type" class="type">{{_type}}</span>
-          <span id="default" hidden$="{{!descriptor.default}}">default: <span class="value">{{descriptor.default}}</span></span>
+           <vaadin-doc-type descriptor={{descriptor}}></vaadin-doc-type>
+<!--           <span id="type" class="type">{{_type}}</span> -->
+<!--           <span id="default" hidden$="{{!descriptor.default}}">default: <span class="value">{{descriptor.default}}</span></span> -->
         </div>
         <ol id="params" hidden$="{{!descriptor.params}}">
           <template is="x-repeat" items="{{descriptor.params}}">
@@ -97,16 +100,11 @@ Give it a hydrolysis `PropertyDescriptor` (via `descriptor`), and watch it go!
     },
 
     ready: function() {
-      console.log("vaadin-doc-property-ready")
       this._isReady = true;
-      this.$.type.innerHTML = this._type.replace(/__--(.*?)--__/, '<a class="documented" href="javascript:">$1</a>');
-      Polymer.dom(this.root).querySelectorAll('a').forEach(function(node){
-        node.addEventListener('click', function(e) {
-          var event = new CustomEvent('navigate');
-          event.original = e;
-          document.dispatchEvent(event);
-        })
-      })
+    },
+    
+    _isDocumentedType: function(t) {
+      return !/^([Nn]umber|[Bb]oolean|[Ob]bject|[Ff]unction|[Ss]tring|[Ee]lement|[Aa]rray|undefined|\"|\*|HTML).*/.test(t);
     },
     
     /**
@@ -128,6 +126,7 @@ Give it a hydrolysis `PropertyDescriptor` (via `descriptor`), and watch it go!
       this._paramText = (this.descriptor.params || []).map(function(param) {
         return param.name;
       }).join(', ');
+
       this._type = this.descriptor.type;
     },
 

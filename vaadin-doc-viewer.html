@@ -34,6 +34,7 @@ with the same name as directory it is being served from.
 -->
 <dom-module id="vaadin-doc-viewer">
 
+  <link rel="import" type="css" href="../iron-doc-viewer/iron-doc-viewer.css">
   <link rel="import" type="css" href="vaadin-doc-viewer.css">
 
   <template>
@@ -134,8 +135,6 @@ with the same name as directory it is being served from.
       } else {
         this._demoUrl = new URL(this.demoPath, this._baseUrl).toString();
       }
-      console.log(this.demoPath, this._baseUrl, this._demoUrl)
-      
     },
 
     _elementsChanged: function() {
@@ -147,18 +146,15 @@ with the same name as directory it is being served from.
     },
 
     _analyzerChanged: function() {
-      console.log("vaadin analyzer")
+      this._analyzer.elements.sort(function(a, b) {
+        return /^v-.*/.test(a.is) ? -1 : /^v-.*/.test(b.is) ? 1 : a.is > b.is ? 1 : -1;
+      });
       this._elements = this._analyzer ? this._analyzer.elements : [];
       for (var i = 0, element; element = this._elements[i]; i++) {
         if (!/^v-/.test(element.is)) {
           element.abstract = true;
         }
-        for (var j = 0, prop; prop = element.properties[j]; j++) {
-          var t = prop.type.replace(/Array<(.*)>/, "$1");
-          if (this._isDocumentedType(t)) {
-            prop.type = prop.type.replace(t, "__--" + t + "--__");
-          }
-        }
+        console.log(element.is, element.abstract)
       }
     },
     
@@ -166,11 +162,6 @@ with the same name as directory it is being served from.
       return !/^([Nn]umber|[Bb]oolean|[Ob]bject|[Ff]unction|[Ss]tring|[Ee]lement|[Aa]rray|undefined|\"|\*|HTML).*/.test(t);
     },
 
-    /**
-     * Activates the element that the user selected.
-     *
-     * @param {!Event} event
-     */
     _onTapNavItem: function(event) {
       var elementName = event.target.textContent;
       for (var i = 0, element; element = this._elements[i]; i++) {
@@ -187,30 +178,11 @@ with the same name as directory it is being served from.
     },
     
     ready: function() {
-      console.log("iron-doc-viewer-ready")
       var _this = this;
       document.addEventListener("navigate", function(e){
         _this._onTapNavItem(e.original)
       })
     },
-
-    /**
-     * Renders this element into static HTML for offline use.
-     *
-     * This is mostly useful for debugging and one-off documentation generation.
-     * If you want to integrate doc generation into your build process, you
-     * probably want to be calling `hydrolysis.Analyzer.analyze()` directly.
-     *
-     * @return {string} The HTML for this element with all state baked in.
-     */
-    marshal: function() {
-      var jsonText = JSON.stringify(this._elements || [], null, '  ');
-      return '<' + this.is + '>\n' +
-             jsonText.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '\n' +
-             '</' + this.is + '>';
-    },
-    
-
   });
 
 })();

@@ -77,14 +77,14 @@ header {
 }
 
 #properties {
-  background-color: rgba(255, 86, 33, 0.2);
+  background-color: rgba(3, 169, 244, 0.2);
 }
 #properties > header {
-  background-color: rgb(255, 86, 33);
+  background-color: rgb(3, 169, 244);
 }
 #properties,
 #properties vaadin-doc-property {
-  border-color: rgb(255, 86, 33);
+  border-color: rgb(3, 169, 244);
 }
 
 #methods {

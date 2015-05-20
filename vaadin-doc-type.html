@@ -1,0 +1,51 @@
+<link rel="import" href="../marked-element/marked-element.html">
+<link rel="import" href="../paper-styles/typography.html">
+<link rel="import" href="../polymer/polymer.html">
+
+<dom-module id="vaadin-doc-type">
+  <template>
+    <span id='prev'>{{_prev}}</span><a href='javascript:' id='link' on-tap="_onTap">{{_link}}</a><span id='post'>{{_post}}</span>
+  </template>
+
+</dom-module>
+
+<script>
+(function() {
+
+  Polymer({
+    is: 'vaadin-doc-type',
+    properties: {
+      descriptor: {
+        type:     Object,
+        observer: '_descriptorChanged',
+      },
+    },
+    _isDocumentedType: function(t) {
+      return !/^([Nn]umber|[Bb]oolean|[Ob]bject|[Ff]unction|[Ss]tring|[Ee]lement|[Aa]rray|undefined|\"|\*|HTML).*/.test(t);
+    },
+    _descriptorChanged: function() {
+      var e = new RegExp("(Array)?([\\[<])?(.*?)([>\\]])?$","i");
+      var r = e.exec(this.descriptor.type);
+      if (r[3].toLowerCase() == 'function') {
+        this._prev = ''
+        this._link = ''
+        this._post = ''
+      } else if (!/function/.test(r[3])  && this._isDocumentedType(r[3])) {
+        this._prev = r[1] ? r[1] + r[2] : '';
+        this._link = r[1] ? r[3] : '';
+        this._post = r[1] ? r[4] : '';
+      } else {
+        this._prev = r[3]
+        this._link = ''
+        this._post = ''
+      }
+    },
+    _onTap: function(e) {
+      var event = new CustomEvent('navigate');
+      event.original = e;
+      document.dispatchEvent(event);
+    }
+  });
+
+})();
+</script>
