@@ -302,7 +302,7 @@ with the same name as directory it is being served from.
       this._loadElement(collection, name);
     },
 
-    _loadElement(collection, name) {
+    _loadElement: function(collection, name) {
       name = name || window.location.hash.replace(/^#/, '') || collection[0].is;
       for (var i = 0, descriptor; descriptor = collection[i]; i++) {
         if (descriptor.is !== name) continue;
