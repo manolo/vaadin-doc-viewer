@@ -12,7 +12,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../polymer/polymer.html">
 <link rel="import" href="../prism-element/prism-highlighter.html">
 
-<link rel="import" href="iron-doc-element.html">
+<link rel="import" href="vaadin-doc-element.html">
 
 <!--
 We cheat a little and ensure that the viewer can, by default, expand to fit the
@@ -34,30 +34,24 @@ Renders documentation for all Polymer elements declared via an import.
 Point it at an import that declares (or transitively imports) all the elments
 you want to document:
 
-    <iron-doc-viewer src="my-elements.html"></iron-doc-viewer>
+    <vaadin-doc-viewer src="my-elements.html"></vaadin-doc-viewer>
 
-You may also omit `src`, and `<iron-doc-viewer>` will attempt to load an import
+You may also omit `src`, and `<vaadin-doc-viewer>` will attempt to load an import
 with the same name as directory it is being served from.
 
 @see #src
 -->
-<dom-module id="iron-doc-viewer">
+<dom-module id="vaadin-doc-viewer">
 
-  <link rel="import" type="css" href="iron-doc-viewer.css">
+  <link rel="import" type="css" href="vaadin-doc-viewer.css">
 
   <template>
     <prism-highlighter></prism-highlighter>
     <hydrolysis-analyzer id="analyzer" src="[[_srcUrl]]" transitive="[[transitive]]" clean analyzer="{{_analyzer}}" loading="{{_loading}}"></hydrolysis-analyzer>
 
-    <section id="content" activeContent$="[[_activeContentType]]">
-      <iron-doc-element id="page" descriptor="[[_activeElement]]"></iron-doc-element>
-      <template is="dom-if" if="[[!noDemo]]">
-        <iframe id="demo" src="[[_demoUrl]]"></iframe>
-      </template>
-    </section>
     <nav>
       <section hidden$="[[!_elements.length]]">
-        <header>Elements</header>
+<!--         <header>Elements</header> -->
         <ul collection="elements" on-tap="_onTapNavItem">
           <!-- Polymer features are crazy special cased as `Polymer.Base`. -->
           <template is="dom-repeat" items="[[_elements]]">
@@ -81,6 +75,14 @@ with the same name as directory it is being served from.
         </ul>
       </section>
     </nav>
+
+    <section id="content" activeContent$="[[_activeContentType]]">
+      <vaadin-doc-element id="page" descriptor="[[_activeElement]]"></vaadin-doc-element>
+<!--       <template is="dom-if" if="[[!noDemo]]"> -->
+        <iframe id="demo" src="[[_demoUrl]]"></iframe>
+<!--       </template> -->
+    </section>
+
   </template>
 
 </dom-module>
@@ -101,7 +103,7 @@ with the same name as directory it is being served from.
 
   Polymer({
 
-    is: 'iron-doc-viewer',
+    is: 'vaadin-doc-viewer',
 
     properties: {
 
@@ -118,7 +120,7 @@ with the same name as directory it is being served from.
        *
        * `awesome-sauce/index.html`:
        *
-       *     <iron-doc-viewer></iron-doc-viewer>
+       *     <vaadin-doc-viewer></vaadin-doc-viewer>
        *
        * Would implicitly have `src="awesome-sauce.html"`.
        */
@@ -200,6 +202,10 @@ with the same name as directory it is being served from.
           this._srcChanged();
         }
       }
+      var _this = this;
+      document.addEventListener("navigate", function(e){
+        _this._onTapNavItem(e.original)
+      })
 
     },
 
@@ -261,7 +267,11 @@ with the same name as directory it is being served from.
     },
 
     _elementsChanged: function() {
-      this._activeElement = (this._elements || [])[0];
+      if (this._activeElement) {
+        this._activeElement = (this._elements || [])[0];
+      } else {
+        this._loadElement(this._elements || [])
+      }
     },
 
     _loadingChanged: function() {
@@ -269,8 +279,16 @@ with the same name as directory it is being served from.
     },
 
     _analyzerChanged: function() {
+      this._analyzer.elements.sort(function(a, b) {
+          return /^v-.*/.test(a.is) ? -1 : /^v-.*/.test(b.is) ? 1 : a.is > b.is ? 1 : -1;
+      })
       this._elements  = this._analyzer ? this._analyzer.elements  : [];
       this._behaviors = this._analyzer ? this._analyzer.behaviors : [];
+      for (var i = 0, element; element = this._elements[i]; i++) {
+        if (!/^v-/.test(element.is)) {
+          element.abstract = true;
+        }
+     }
     },
 
     /**
@@ -280,12 +298,17 @@ with the same name as directory it is being served from.
      */
     _onTapNavItem: function(event) {
       var name = event.target.textContent;
-      var collection = this['_' + event.target.parentNode.getAttribute('collection')];
+      var collection = this['_' + event.target.parentNode.getAttribute('collection')] || this._elements;
+      this._loadElement(collection, name);
+    },
 
+    _loadElement(collection, name) {
+      name = name || window.location.hash.replace(/^#/, '') || collection[0].is;
       for (var i = 0, descriptor; descriptor = collection[i]; i++) {
         if (descriptor.is !== name) continue;
         this._activeContentType = 'element';
         this._activeElement = descriptor;
+        window.location.hash = name;
         return; // First one wins.
       }
     },

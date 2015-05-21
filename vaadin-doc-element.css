@@ -16,10 +16,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 }
 header {
   @apply(--paper-font-headline);
-  color: #e91e63;
+  color: rgb(3, 169, 244);
 }
 :host > header {
   @apply(--paper-font-display1);
+  padding-top: 6px;
 }
 :host([type=element]):not([abstract]) > header:before {
   content: '<';
@@ -76,14 +77,14 @@ header {
 }
 
 #properties {
-  background-color: rgba(255, 86, 33, 0.2);
+  background-color: rgba(3, 169, 244, 0.2);
 }
 #properties > header {
-  background-color: rgb(255, 86, 33);
+  background-color: rgb(3, 169, 244);
 }
 #properties,
-#properties iron-doc-property {
-  border-color: rgb(255, 86, 33);
+#properties vaadin-doc-property {
+  border-color: rgb(3, 169, 244);
 }
 
 #methods {
@@ -93,27 +94,27 @@ header {
   background-color: rgb(0, 190, 164);
 }
 #methods,
-#methods iron-doc-property {
+#methods vaadin-doc-property {
   border-color: rgb(0, 190, 164);
 }
 
-iron-doc-property {
+vaadin-doc-property {
   border-bottom: 1px solid;
 }
-iron-doc-property:last-of-type {
+vaadin-doc-property:last-of-type {
   border-bottom-width: 0;
 }
 
 /* Private Properties */
 
-iron-doc-property[private] {
+vaadin-doc-property[private] {
   display: none;
 }
 
-:host(.show-private) iron-doc-property[private] {
+:host(.show-private) vaadin-doc-property[private] {
   display: block;
 }
 
-iron-doc-property[configuration] {
+vaadin-doc-property[configuration] {
   display: none !important; /* Never. */
 }

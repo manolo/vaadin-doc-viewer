@@ -27,25 +27,25 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   display: none;
   min-height: 100%;
 }
-#content[activeContent="element"] > iron-doc-element,
+#content[activeContent="element"] > vaadin-doc-element,
 #content[activeContent="demo"] > #demo {
   display: block;
 }
 
-iron-doc-element, iframe {
+vaadin-doc-element, iframe {
   width: 100%;
 }
 iframe {
   border: 0;
   height: 100%;
 }
-iron-doc-element[hidden] {
+vaadin-doc-element[hidden] {
   display: none;
 }
 nav {
   mixin(--paper-font-body2);
   overflow: hidden;
-  padding: 0 32px;
+  padding: 6px 32px;
   position: relative;
 }
 nav header {
@@ -63,14 +63,15 @@ nav section {
   /* Cheat to chop off the first border when we're not sure which are visible. */
   position: relative;
   top: -1px;
-  padding: 16px 0;
+  padding: 4px 0;
 }
 
 nav li {
   @apply(--paper-font-body2);
-  padding: 8px;
+  padding: 4px 8px 4px 16px;
   margin: 0 -8px;
   cursor: pointer;
+  color: rgb(3, 169, 244);
 }
 
 nav li:not(.demo) {
@@ -82,3 +83,13 @@ nav [collection=elements] li:not([abstract]):before {
 nav [collection=elements] li:not([abstract]):after {
   content: '>';
 }
+nav li:not([abstract]),
+nav li.demo {
+  padding-left: 8px !important;
+  font-size: 110% !important;
+}
+nav li.demo {
+  text-transform: uppercase;
+}
+
+

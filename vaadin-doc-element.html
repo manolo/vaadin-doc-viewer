@@ -11,12 +11,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../paper-styles/typography.html">
 <link rel="import" href="../polymer/polymer.html">
 
-<link rel="import" href="iron-doc-property.html">
+<link rel="import" href="vaadin-doc-property.html">
 
 <!--
 Renders documentation describing an element's API. Also works for behaviors.
 
-`iron-doc-element` renders element descriptions as extracted by
+`vaadin-doc-element` renders element descriptions as extracted by
 [Hydrolysis](https://github.com/PolymerLabs/hydrolysis). You can provide them
 either via binding...
 
@@ -39,9 +39,9 @@ the text content will not be respected, only the initial value will be loaded.
 If you wish to update the documented element, please set it via the `descriptor`
 property.
 -->
-<dom-module id="iron-doc-element">
+<dom-module id="vaadin-doc-element">
 
-  <link rel="import" type="css" href="iron-doc-element.css">
+  <link rel="import" type="css" href="vaadin-doc-element.css">
 
   <template>
 
@@ -53,21 +53,21 @@ property.
 
     <nav id="api">
       <header>API Reference</header>
-      <a id="togglePrivate" on-tap="_togglePrivate">{{_privateToggleLabel}}</a>
-      <a id="toggleCollapsed" on-tap="_toggleCollapsed">{{_collapseToggleLabel}}</a>
+<!--       <a id="togglePrivate" on-tap="_togglePrivate">{{_privateToggleLabel}}</a> -->
+<!--       <a id="toggleCollapsed" on-tap="_toggleCollapsed">{{_collapseToggleLabel}}</a> -->
     </nav>
 
     <section id="properties" hidden$="{{!_properties.length}}">
       <header>Properties</header>
       <template is="dom-repeat" items="{{_properties}}">
-        <iron-doc-property descriptor="{{item}}"></iron-doc-property>
+        <vaadin-doc-property descriptor="{{item}}"></vaadin-doc-property>
       </template>
     </section>
 
     <section id="methods" hidden$="{{!_methods.length}}">
       <header>Methods</header>
       <template is="dom-repeat" items="{{_methods}}">
-        <iron-doc-property descriptor="{{item}}"></iron-doc-property>
+        <vaadin-doc-property descriptor="{{item}}"></vaadin-doc-property>
       </template>
     </section>
 
@@ -80,7 +80,7 @@ property.
 
   Polymer({
 
-    is: 'iron-doc-element',
+    is: 'vaadin-doc-element',
 
     properties: {
 
@@ -131,7 +131,7 @@ property.
             'and JSON descriptor:', this._jsonDescriptor,
             'Please provide only one');
         throw new Error(
-            '<iron-doc-element> accepts either a bound or JSON descriptor; not both');
+            '<vaadin-doc-element> accepts either a bound or JSON descriptor; not both');
       }
 
       if (jsonDescriptor) {
@@ -169,7 +169,7 @@ property.
       var properties = [];
       var methods    = [];
       for (var i = 0, property; property = this.descriptor.properties[i]; i++) {
-        (property.type === 'Function' ? methods : properties).push(property);
+        (property.type.toLowerCase() === 'function' ? methods : properties).push(property);
       }
       this._properties = properties;
       this._methods    = methods;
