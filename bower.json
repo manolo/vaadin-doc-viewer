@@ -1,6 +1,6 @@
 {
   "name": "vaadin-doc-viewer",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "homepage": "https://github.com/manolo/vaadin-doc-viewer",
   "authors": [
     "Manolo Carrasco <manolo@vaadin.com>"
@@ -22,6 +22,6 @@
     "tests"
   ],
   "dependencies": {
-    "iron-doc-viewer": "PolymerElements/iron-doc-viewer#v0.8.8"
+    "iron-doc-viewer": "PolymerElements/iron-doc-viewer#v0.9.2"
   }
 }
