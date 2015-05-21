@@ -16,7 +16,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 }
 header {
   mixin(--paper-font-headline);
-  color: #e91e63;
+  color: rgb(3, 169, 244);
+  padding-left: 13px;
 }
 :host > header {
   mixin(--paper-font-display1);

@@ -43,7 +43,7 @@ vaadin-doc-element[hidden] {
   display: none;
 }
 nav {
-  padding: 16px 32px;
+  padding: 0px 32px;
 }
 nav ul {
   list-style: none;
@@ -55,12 +55,11 @@ nav .extra {
   border-top: 1px solid #e0e0e0;
   color: #03A9F4;
   text-transform: uppercase;
-  
+  padding: 0px !important;
 }
 nav li {
   ]mixin(--paper-font-body2);
   padding: 8px;
-  margin: 0 -8px;
   cursor: pointer;
 }
 nav .elements li {
@@ -68,9 +67,11 @@ nav .elements li {
   cursor: pointer;
   color: #03A9F4;
 }
-nav .elements li:not([abstract]) {
+nav .elements li:not([abstract]), nav .extra li {
   font-size: 110% !important;
-  font-weight: b
+  font-weight: bold;
+  padding-left: 0px;
+  padding-top: 14px;
 }
 nav .elements li:not([abstract]):before {
   content: '<';
