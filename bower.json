@@ -8,9 +8,6 @@
   "description": "A custom HTML element for reading documentation of Vaadin Components",
   "main": "vaadin-doc-viewer.html",
   "keywords": [
-    "web-components",
-    "polymer",
-    "vaadin"
   ],
   "license": "MIT",
   "ignore": [
